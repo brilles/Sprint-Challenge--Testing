@@ -22,6 +22,29 @@ describe('games-router.js', () => {
       expect(res.status).toBe(201);
     });
 
+    it('should return code 405 Not Allowed if dublicate game', async () => {
+      const game1 = {
+        title: 'Pacman', // required
+        genre: 'Arcade', // required
+        releaseYear: 1980 // not required
+      };
+      const game2 = {
+        title: 'Pacman', // required
+        genre: 'Arcade', // required
+        releaseYear: 1980 // not required
+      };
+
+      const res1 = await request(server)
+        .post('/games')
+        .send(game1);
+
+      const res2 = await request(server)
+        .post('/games')
+        .send(game2);
+
+      expect(res2.status).toBe(405);
+    });
+
     it('should return status 422 if the fields are incomplete', async () => {
       const game = {
         title: 'Pacman', // required

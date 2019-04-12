@@ -9,8 +9,13 @@ router.post('/', async (req, res) => {
       const insertedGame = await Games.insert(game);
       res.status(201).json(insertedGame);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error adding game.' });
+      if (error.errno === 19) {
+        console.error(error);
+        res.status(405).json({ message: 'No duplicates allowed.' });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: 'Error adding game.' });
+      }
     }
   } else {
     res.status(422).json({ message: 'Must provide title and genre fields.' });

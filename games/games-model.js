@@ -2,7 +2,8 @@ const db = require('../data/dbConfig.js');
 
 module.exports = {
   insert,
-  get
+  get,
+  getByTitle
 };
 
 async function insert(game) {
@@ -14,4 +15,10 @@ async function insert(game) {
 
 function get() {
   return db('games');
+}
+
+function getByTitle(title) {
+  return db('games')
+    .where({ title })
+    .first();
 }
